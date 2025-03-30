@@ -1,9 +1,31 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
+import { spawn } from 'child_process'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
 function createWindow(): void {
+  const isProd = app.isPackaged
+
+  if (isProd) {
+    const backendPath = join(process.resourcesPath, 'server', 'index.js')
+    const backend = spawn(process.execPath, [backendPath], {
+      stdio: 'inherit'
+    })
+
+    backend.on('exit', (code) => {
+      console.log(`Backend exited with code ${code}`)
+    })
+
+    backend.on('error', (err) => {
+      console.error('Failed to start backend process:', err)
+    })
+
+    app.once('before-quit', () => {
+      if (!backend.killed) backend.kill()
+    })
+  }
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,

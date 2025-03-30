@@ -1,8 +1,23 @@
+import { useEffect, useState } from 'react'
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
 
 function App(): JSX.Element {
+  const [healthStatus, setHealthStatus] = useState<string>('Checking...')
+
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:3000/api/health')
+      .then((res) => res.json())
+      .then((data) => {
+        setHealthStatus(`✅ Backend OK | Uptime: ${Math.floor(data.uptime)}s`)
+      })
+      .catch((err) => {
+        setHealthStatus('❌ Backend Unreachable')
+        console.error('Health check failed:', err)
+      })
+  }, [])
 
   return (
     <>
@@ -15,6 +30,9 @@ function App(): JSX.Element {
       <p className="tip">
         Please try pressing <code>F12</code> to open the devTool
       </p>
+
+      <div className="health-status">{healthStatus}</div>
+
       <div className="actions">
         <div className="action">
           <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
@@ -27,7 +45,8 @@ function App(): JSX.Element {
           </a>
         </div>
       </div>
-      <Versions></Versions>
+
+      <Versions />
     </>
   )
 }
