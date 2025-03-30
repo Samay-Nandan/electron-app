@@ -26,3 +26,5 @@ Thumbs.db
 # ts-node / ts-node-dev
 *.tsbuildinfo
 .tmp/
+
+.eslintcache
