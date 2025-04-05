@@ -16,9 +16,10 @@
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
-    "build:win": "npm run build && electron-builder --win",
-    "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:win": "npm run build && electron-builder --win --config.directories.output=$BUILD_OUTPUT/frontend",
+    "build:mac": "electron-vite build && electron-builder --mac --config.directories.output=$BUILD_OUTPUT/frontend",
+    "build:linux": "electron-vite build && electron-builder --linux --config.directories.output=$BUILD_OUTPUT/frontend && npm run clean:artifacts:linux",
+    "clean:artifacts:linux": "node scripts/linux.js"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",

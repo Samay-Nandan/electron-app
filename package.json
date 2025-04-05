@@ -9,9 +9,9 @@
         "dev": "concurrently -n frontend,server -c auto \"yarn workspace frontend dev\" \"yarn workspace server dev\"",
         "start": "concurrently -n frontend,server -c auto \"yarn workspace frontend start\" \"yarn workspace server start\"",
         "build": "concurrently -n frontend,server -c auto \"yarn workspace frontend build\" \"yarn workspace server build\"",
-        "build:win": "yarn workspace frontend build:win",
-        "build:mac": "yarn workspace frontend build:mac",
-        "build:linux": "yarn workspace frontend build:linux",
+        "build:win": "BUILD_OUTPUT=$PWD/build/windows yarn workspace server build && BUILD_OUTPUT=$PWD/build/windows yarn workspace server pkg:win && BUILD_OUTPUT=$PWD/build/windows yarn workspace frontend build:win",
+        "build:mac": "BUILD_OUTPUT=$PWD/build/mac yarn workspace server build && BUILD_OUTPUT=$PWD/build/mac yarn workspace server pkg:mac && BUILD_OUTPUT=$PWD/build/mac yarn workspace frontend build:mac",
+        "build:linux": "BUILD_OUTPUT=$PWD/build/linux yarn workspace server build && BUILD_OUTPUT=$PWD/build/linux yarn workspace server pkg:linux && BUILD_OUTPUT=$PWD/build/linux yarn workspace frontend build:linux",
         "typecheck": "yarn workspace frontend typecheck && yarn workspace server lint",
         "format": "yarn workspace frontend format && yarn workspace server format",
         "lint": "yarn workspace frontend lint && yarn workspace server lint"
