@@ -1,0 +1,23 @@
+appId: com.electron.app
+productName: best-electron-app
+directories:
+  output: build/windows
+  app: frontend
+files:
+  - "**/*"
+extraResources:
+  - from: build/windows/server/server
+    to: server
+win:
+  target:
+    - nsis
+    - zip
+  artifactName: "${productName}-${version}_${arch}.${ext}"
+  category: Utility
+  executableName: best-electron-app
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: true
+  deleteAppDataOnUninstall: true
+  include: "build/installer.nsh"

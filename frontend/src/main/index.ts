@@ -8,8 +8,8 @@ function createWindow(): void {
   const isProd = app.isPackaged
 
   if (isProd) {
-    const backendPath = join(process.resourcesPath, 'server', 'index.js')
-    const backend = spawn(process.execPath, [backendPath], {
+    const backendPath = join(process.resourcesPath, 'server')
+    const backend = spawn(backendPath, [], {
       stdio: 'inherit'
     })
 

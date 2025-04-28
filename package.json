@@ -9,9 +9,10 @@
         "dev": "concurrently -n frontend,server -c auto \"yarn workspace frontend dev\" \"yarn workspace server dev\"",
         "start": "concurrently -n frontend,server -c auto \"yarn workspace frontend start\" \"yarn workspace server start\"",
         "build": "concurrently -n frontend,server -c auto \"yarn workspace frontend build\" \"yarn workspace server build\"",
-        "build:win": "BUILD_OUTPUT=$PWD/build/windows yarn workspace server build && BUILD_OUTPUT=$PWD/build/windows yarn workspace server pkg:win && BUILD_OUTPUT=$PWD/build/windows yarn workspace frontend build:win",
-        "build:mac": "BUILD_OUTPUT=$PWD/build/mac yarn workspace server build && BUILD_OUTPUT=$PWD/build/mac yarn workspace server pkg:mac && BUILD_OUTPUT=$PWD/build/mac yarn workspace frontend build:mac",
-        "build:linux": "BUILD_OUTPUT=$PWD/build/linux yarn workspace server build && BUILD_OUTPUT=$PWD/build/linux yarn workspace server pkg:linux && BUILD_OUTPUT=$PWD/build/linux yarn workspace frontend build:linux",
+        "clean:build": "rimraf build",
+        "build:win": "BUILD_OUTPUT=$PWD/build/windows yarn workspace server build && BUILD_OUTPUT=$PWD/build/windows yarn workspace server pkg:win && BUILD_OUTPUT=$PWD/build/windows yarn workspace frontend build:win && electron-builder --config electron-builder.win.yml --win && node scripts/windows.js",
+        "build:mac": "BUILD_OUTPUT=$PWD/build/mac yarn workspace server build && BUILD_OUTPUT=$PWD/build/mac yarn workspace server pkg:mac && BUILD_OUTPUT=$PWD/build/mac yarn workspace frontend build:mac && electron-builder --config electron-builder.mac.yml --mac && node scripts/mac.js",
+        "build:linux": "BUILD_OUTPUT=$PWD/build/linux yarn workspace server build && BUILD_OUTPUT=$PWD/build/linux yarn workspace server pkg:linux && BUILD_OUTPUT=$PWD/build/linux yarn workspace frontend build:linux && electron-builder --config electron-builder.linux.yml --linux && node scripts/linux.js",
         "typecheck": "yarn workspace frontend typecheck && yarn workspace server lint",
         "format": "yarn workspace frontend format && yarn workspace server format",
         "lint": "yarn workspace frontend lint && yarn workspace server lint"

@@ -1,0 +1,27 @@
+appId: com.electron.app
+productName: best-electron-app
+directories:
+  output: build/linux
+  app: frontend
+files:
+  - "**/*"
+extraResources:
+  - from: build/linux/server/server
+    to: server
+linux:
+  target:
+    - deb
+    - snap
+    - AppImage
+  artifactName: "${productName}-${version}_${arch}.${ext}"
+  category: Utility
+  executableName: best-electron-app
+deb:
+  maintainer: samaynandan@gmail.com
+  packageCategory: utility
+snap:
+  plugs:
+    - network
+    - home
+appImage:
+  artifactName: "${productName}-${version}.${ext}"
