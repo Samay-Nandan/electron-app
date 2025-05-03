@@ -24,13 +24,15 @@ jobs:
 
       - name: Build full app (frontend + server + electron)
         run: yarn build:linux
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            build/linux/*.AppImage
-            build/linux/*.deb
-            build/linux/*.snap
+            build/linux/**/*.AppImage
+            build/linux/**/*.deb
+            build/linux/**/*.snap
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
