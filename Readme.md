@@ -42,3 +42,5 @@ git tag v1.0.0 && git push --tags
 
 - Before tagging, make sure to update the version field in your frontend package.json
   If the version isn’t updated, the Electron auto-updater will not work at all.
+
+- Check that the latest release at https://github.com/Samay-Nandan/electron-app/releases is published (not a draft); if it’s a draft, manually publish it.
