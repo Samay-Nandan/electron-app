@@ -29,10 +29,6 @@ jobs:
         run: yarn build:linux
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: Build and publish Snap package
-        run: snapcraft upload build/linux/*.snap --release=stable
-        env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
 
       - name: Upload artifacts to GitHub Release
