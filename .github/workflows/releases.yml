@@ -19,9 +19,6 @@ jobs:
           node-version: 20
           cache: "yarn"
 
-      - name: Install Snapcraft
-        run: sudo snap install snapcraft --classic
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
@@ -29,7 +26,6 @@ jobs:
         run: yarn build:linux
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
 
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
@@ -37,6 +33,5 @@ jobs:
           files: |
             build/linux/**/*.AppImage
             build/linux/**/*.deb
-            build/linux/**/*.snap
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

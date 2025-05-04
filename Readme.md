@@ -18,19 +18,7 @@ sudo dpkg --purge best-electron-app
 sudo dpkg --purge best-electron-app && yarn clean:build && yarn build:linux && sudo dpkg -i build/linux/best-electron-app-1.0.0_amd64.deb && best-electron-app && sudo dpkg --purge best-electron-app
 ```
 
-# GitHub Auto Release (Snap + Tags)
-
-## Install Snapcraft
-
-```bash
-sudo snap install snapcraft --classic
-```
-
-## Create Snapcraft Credentials
-
-```bash
-snapcraft export-login snapcraft-creds.json
-```
+# GitHub Auto Release (Tags)
 
 ## Add Credentials to GitHub
 
@@ -40,7 +28,6 @@ snapcraft export-login snapcraft-creds.json
 
   Make sure token has only repo scope (no additional permissions needed)
 
-Create the following two secrets:
+Create the following secret:
 
-1. SNAPCRAFT_STORE_CREDENTIALS: Contents of snapcraft-creds.json
-2. GH_TOKEN: GitHub Personal Access Token
+-  GH_TOKEN: GitHub Personal Access Token
