@@ -17,6 +17,17 @@ function App(): JSX.Element {
         setHealthStatus('❌ Backend Unreachable')
         console.error('Health check failed:', err)
       })
+
+    window.electron.ipcRenderer.on('update_available', () => {
+      alert('🚀 Update available. Downloading...')
+    })
+
+    window.electron.ipcRenderer.on('update_downloaded', () => {
+      const confirmRestart = window.confirm('✅ Update downloaded. Restart now?')
+      if (confirmRestart) {
+        window.electron.ipcRenderer.send('restart_app')
+      }
+    })
   }, [])
 
   return (

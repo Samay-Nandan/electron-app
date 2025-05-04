@@ -31,3 +31,10 @@ sudo dpkg --purge best-electron-app && yarn clean:build && yarn build:linux && s
 Create the following secret:
 
 -  GH_TOKEN: GitHub Personal Access Token
+
+## Git Tagging and Pushing to GitHub
+
+```bash
+git tag v1.0.0 && git push --tags
+```
+
