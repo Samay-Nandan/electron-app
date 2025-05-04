@@ -62,20 +62,28 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  // Set app user model id for windows
+// Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
-  // Default open or close DevTools by F12 in development
+// Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
+// IPC test
   ipcMain.on('ping', () => console.log('pong'))
 
   createWindow()
+
+  // Log the app version on startup
+  console.log('🚀 App runtime version:', app.getVersion())
+
+  // Expose app version to the frontend via IPC
+  ipcMain.handle('get_app_version', () => {
+    return app.getVersion()
+  })
 
   autoUpdater.setFeedURL({
     provider: 'github',
@@ -86,18 +94,33 @@ app.whenReady().then(() => {
   autoUpdater.checkForUpdatesAndNotify()
 
   autoUpdater.on('update-available', () => {
+    console.log('🔄 Update available!')
     BrowserWindow.getAllWindows().forEach((win) => {
       win.webContents.send('update_available')
     })
   })
 
+  autoUpdater.on('update-not-available', (info) => {
+    console.log('✅ No updates available:', info)
+  })
+
+  autoUpdater.on('download-progress', (progress) => {
+    console.log('⬇️ Download progress:', progress)
+  })
+
   autoUpdater.on('update-downloaded', () => {
+    console.log('✅ Update downloaded!')
     BrowserWindow.getAllWindows().forEach((win) => {
       win.webContents.send('update_downloaded')
     })
   })
 
+  autoUpdater.on('error', (err) => {
+    console.error('❌ Error in auto-updater:', err)
+  })
+
   ipcMain.on('restart_app', () => {
+    console.log('♻️ Restarting app to install update...')
     autoUpdater.quitAndInstall()
   })
 

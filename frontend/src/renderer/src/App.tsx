@@ -28,6 +28,10 @@ function App(): JSX.Element {
         window.electron.ipcRenderer.send('restart_app')
       }
     })
+    window.electron.ipcRenderer.invoke('get_app_version').then((version) => {
+      console.log('App version is:', version);
+      alert(`🚀 Running version: ${version}`);
+    });
   }, [])
 
   return (
