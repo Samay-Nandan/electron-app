@@ -31,7 +31,6 @@ dmg:
 linux:
   target:
     - AppImage
-    - snap
     - deb
   artifactName: '${productName}-${version}_${arch}.${ext}'
   maintainer: electronjs.org

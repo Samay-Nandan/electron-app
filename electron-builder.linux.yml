@@ -11,7 +11,6 @@ extraResources:
 linux:
   target:
     - deb
-    - snap
     - AppImage
   artifactName: "${productName}-${version}_${arch}.${ext}"
   category: Utility
@@ -19,9 +18,5 @@ linux:
 deb:
   maintainer: samaynandan@gmail.com
   packageCategory: utility
-snap:
-  plugs:
-    - network
-    - home
 appImage:
   artifactName: "${productName}-${version}.${ext}"
