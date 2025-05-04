@@ -20,6 +20,7 @@ function App(): JSX.Element {
 
     window.electron.ipcRenderer.on('update_available', () => {
       alert('🚀 Update available. Downloading...')
+      console.log('Starting download...');
     })
 
     window.electron.ipcRenderer.on('update_downloaded', () => {
