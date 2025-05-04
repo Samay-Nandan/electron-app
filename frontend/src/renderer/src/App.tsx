@@ -11,7 +11,9 @@ function App(): JSX.Element {
     fetch('http://127.0.0.1:3000/api/health')
       .then((res) => res.json())
       .then((data) => {
-        setHealthStatus(`✅ Backend OK | Uptime: ${Math.floor(data.uptime)}s`)
+        setHealthStatus(
+          `✅ Backend OK | Uptime: ${Math.floor(data.uptime)}s | Time: ${data.timestamp}`
+        )
       })
       .catch((err) => {
         setHealthStatus('❌ Backend Unreachable')
@@ -20,7 +22,7 @@ function App(): JSX.Element {
 
     window.electron.ipcRenderer.on('update_available', () => {
       alert('🚀 Update available. Downloading...')
-      console.log('Starting download...');
+      console.log('Starting download...')
     })
 
     window.electron.ipcRenderer.on('update_downloaded', () => {
@@ -30,9 +32,9 @@ function App(): JSX.Element {
       }
     })
     window.electron.ipcRenderer.invoke('get_app_version').then((version) => {
-      console.log('App version is:', version);
-      alert(`🚀 Running version: ${version}`);
-    });
+      console.log('App version is:', version)
+      alert(`🚀 Running version: ${version}`)
+    })
   }, [])
 
   return (

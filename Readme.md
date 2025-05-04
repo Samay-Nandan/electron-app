@@ -30,7 +30,7 @@ sudo dpkg --purge best-electron-app && yarn clean:build && yarn build:linux && s
 
 Create the following secret:
 
--  GH_TOKEN: GitHub Personal Access Token
+- GH_TOKEN: GitHub Personal Access Token
 
 ## Git Tagging and Pushing to GitHub
 
@@ -38,3 +38,7 @@ Create the following secret:
 git tag v1.0.0 && git push --tags
 ```
 
+### IMPORTANT: Update package.json
+
+- Before tagging, make sure to update the version field in your frontend package.json
+  If the version isn’t updated, the Electron auto-updater will not work at all.
