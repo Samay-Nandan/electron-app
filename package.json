@@ -5,6 +5,10 @@
         "frontend",
         "server"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Samay-Nandan/electron-app.git"
+    },
     "scripts": {
         "dev": "concurrently -n frontend,server -c auto \"yarn workspace frontend dev\" \"yarn workspace server dev\"",
         "start": "concurrently -n frontend,server -c auto \"yarn workspace frontend start\" \"yarn workspace server start\"",
