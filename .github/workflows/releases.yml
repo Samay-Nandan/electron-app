@@ -6,8 +6,23 @@ on:
       - "v*"
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            build_script: build:linux
+            artifact_paths: |
+              build/linux/**/*.AppImage
+              build/linux/**/*.deb
+          - os: windows-latest
+            build_script: build:win
+            artifact_paths: |
+              build/windows/**/*.exe
+              build/windows/**/*.zip
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout repository
@@ -22,16 +37,14 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build full app (frontend + server + electron)
-        run: yarn build:linux
+      - name: Build full app (${{ matrix.os }})
+        run: yarn ${{ matrix.build_script }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            build/linux/**/*.AppImage
-            build/linux/**/*.deb
+          files: ${{ matrix.artifact_paths }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
