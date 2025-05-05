@@ -18,7 +18,8 @@
         "lint": "yarn workspace frontend lint && yarn workspace server lint"
     },
     "devDependencies": {
-        "concurrently": "^8.2.0"
+        "concurrently": "^8.2.0",
+        "electron-builder": "^25.1.8"
     },
     "engines": {
         "node": ">=20.0.0"
