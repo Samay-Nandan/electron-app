@@ -39,10 +39,5 @@ linux:
 appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
-publish:
-  provider: github
-  repo: electron-app
-  owner: Samay-Nandan
-  draft: false
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
