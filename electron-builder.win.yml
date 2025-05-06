@@ -6,7 +6,7 @@ directories:
 files:
   - "**/*"
 extraResources:
-  - from: build/windows/server/server
+  - from: build/windows/server/server.exe
     to: server
 win:
   target:
