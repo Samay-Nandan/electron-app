@@ -13,7 +13,6 @@ win:
     - nsis
     - zip
   artifactName: "${productName}-${version}_${arch}.${ext}"
-  category: Utility
   executableName: best-electron-app
 nsis:
   oneClick: false
