@@ -19,4 +19,3 @@ nsis:
   allowToChangeInstallationDirectory: true
   perMachine: true
   deleteAppDataOnUninstall: true
-  include: "build/installer.nsh"
