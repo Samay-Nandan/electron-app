@@ -42,22 +42,23 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Check for server.exe (Windows only)
+      - name: 🗂️ Log full contents of build/ folder (Windows)
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
-          Write-Host "🔍 Checking for server.exe at: build/windows/server/server.exe"
-          if (Test-Path build/windows/server) {
-            Get-ChildItem build/windows/server | Format-Table Name, Length
-          } else {
-            Write-Host "⚠️ build/windows/server does not exist"
-          }
+          Write-Host "🧾 Listing all files in the build/ directory (recursive)...`n"
 
-          $serverExe = Get-ChildItem -Path build/windows -Recurse -Filter server.exe -ErrorAction SilentlyContinue
-          if ($serverExe) {
-            Write-Host "✅ Found server.exe at $($serverExe.FullName)"
+          if (Test-Path build) {
+            Get-ChildItem -Path build -Recurse | ForEach-Object {
+              if ($_.PSIsContainer) {
+                Write-Host "📁 DIR : $($_.FullName)"
+              } else {
+                $sizeMB = "{0:N2}" -f ($_.Length / 1MB)
+                Write-Host "📄 FILE: $($_.FullName) (${sizeMB} MB)"
+              }
+            }
           } else {
-            Write-Host "❌ server.exe not found"
+            Write-Host "⚠️ 'build/' directory does not exist yet."
           }
 
       - name: Upload artifacts to GitHub Release
