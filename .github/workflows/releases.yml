@@ -44,10 +44,21 @@ jobs:
 
       - name: Check for server.exe (Windows only)
         if: matrix.os == 'windows-latest'
+        shell: pwsh
         run: |
-          echo "🔍 Checking for server.exe at: build/windows/server/server.exe"
-          ls -lh build/windows/server || echo "⚠️ build/windows/server does not exist"
-          find build/windows -name server.exe || echo "❌ server.exe not found"
+          Write-Host "🔍 Checking for server.exe at: build/windows/server/server.exe"
+          if (Test-Path build/windows/server) {
+            Get-ChildItem build/windows/server | Format-Table Name, Length
+          } else {
+            Write-Host "⚠️ build/windows/server does not exist"
+          }
+
+          $serverExe = Get-ChildItem -Path build/windows -Recurse -Filter server.exe -ErrorAction SilentlyContinue
+          if ($serverExe) {
+            Write-Host "✅ Found server.exe at $($serverExe.FullName)"
+          } else {
+            Write-Host "❌ server.exe not found"
+          }
 
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
