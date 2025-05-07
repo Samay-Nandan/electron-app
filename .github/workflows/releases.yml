@@ -42,6 +42,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: Check for server.exe (Windows only)
+        if: matrix.os == 'windows-latest'
+        run: |
+          echo "🔍 Checking for server.exe at: build/windows/server/server.exe"
+          ls -lh build/windows/server || echo "⚠️ build/windows/server does not exist"
+          find build/windows -name server.exe || echo "❌ server.exe not found"
+
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
