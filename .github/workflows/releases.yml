@@ -27,30 +27,36 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout repository
+      - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🧰 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "yarn"
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Set BUILD_OUTPUT environment variable
-        shell: ${{ matrix.os == 'windows-latest' && 'pwsh' || 'bash' }}
-        run: |
-          echo "BUILD_OUTPUT=${{ matrix.build_output }}" >> $env:GITHUB_ENV
+      - name: 🔧 Set BUILD_OUTPUT on Ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: echo "BUILD_OUTPUT=${{ matrix.build_output }}" >> $GITHUB_ENV
 
-      - name: Build full app (${{ matrix.os }})
+      - name: 🔧 Set BUILD_OUTPUT on Windows
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          "BUILD_OUTPUT=${{ matrix.build_output }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: 🔨 Build full app (${{ matrix.os }})
         run: yarn ${{ matrix.build_script }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           BUILD_OUTPUT: ${{ matrix.build_output }}
 
-      - name: Upload artifacts to GitHub Release
+      - name: 🚀 Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: ${{ matrix.artifact_paths }}
