@@ -16,11 +16,13 @@ jobs:
             artifact_paths: |
               build/linux/**/*.AppImage
               build/linux/**/*.deb
+            build_output: ${{ github.workspace }}/build/linux
           - os: windows-latest
             build_script: build:win
             artifact_paths: |
               build/windows/**/*.exe
               build/windows/**/*.zip
+            build_output: ${{ github.workspace }}\build\windows
 
     runs-on: ${{ matrix.os }}
 
@@ -37,29 +39,16 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Set BUILD_OUTPUT environment variable
+        shell: ${{ matrix.os == 'windows-latest' && 'pwsh' || 'bash' }}
+        run: |
+          echo "BUILD_OUTPUT=${{ matrix.build_output }}" >> $env:GITHUB_ENV
+
       - name: Build full app (${{ matrix.os }})
         run: yarn ${{ matrix.build_script }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: 🗂️ Log full contents of build/ folder (Windows)
-        if: matrix.os == 'windows-latest'
-        shell: pwsh
-        run: |
-          Write-Host "🧾 Listing all files in the build/ directory (recursive)...`n"
-
-          if (Test-Path build) {
-            Get-ChildItem -Path build -Recurse | ForEach-Object {
-              if ($_.PSIsContainer) {
-                Write-Host "📁 DIR : $($_.FullName)"
-              } else {
-                $sizeMB = "{0:N2}" -f ($_.Length / 1MB)
-                Write-Host "📄 FILE: $($_.FullName) (${sizeMB} MB)"
-              }
-            }
-          } else {
-            Write-Host "⚠️ 'build/' directory does not exist yet."
-          }
+          BUILD_OUTPUT: ${{ matrix.build_output }}
 
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
