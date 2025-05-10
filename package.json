@@ -1,6 +1,7 @@
 {
     "name": "electron-monorepo",
     "private": true,
+    "license": "MIT",
     "workspaces": [
         "frontend",
         "server"

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "bin": "dist/server.js",
+  "license": "MIT",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",

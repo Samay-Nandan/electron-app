@@ -1,21 +1,26 @@
-appId: com.electron.app
-productName: best-electron-app
+extends: electron-builder.base.yml
+
 directories:
   output: build/linux
   app: frontend
+
 files:
   - "**/*"
+
 extraResources:
   - from: build/linux/server/server
     to: server
+
 linux:
   target:
     - deb
     - AppImage
   artifactName: "${productName}-${version}_${arch}.${ext}"
   executableName: best-electron-app
+
 deb:
   maintainer: samaynandan@gmail.com
   packageCategory: utility
+
 appImage:
   artifactName: "${productName}-${version}.${ext}"

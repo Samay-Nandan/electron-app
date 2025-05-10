@@ -44,3 +44,9 @@ git tag v1.0.0 && git push --tags
   If the version isn’t updated, the Electron auto-updater will not work at all.
 
 - Check that the latest release at https://github.com/Samay-Nandan/electron-app/releases is published (not a draft); if it’s a draft, manually publish it.
+
+# Add MIT license
+
+```bash
+curl -o LICENSE https://raw.githubusercontent.com/github/choosealicense.com/gh-pages/_licenses/mit.txt
+```

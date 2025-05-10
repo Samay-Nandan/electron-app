@@ -1,7 +1,4 @@
-appId: com.electron.app
-productName: best-electron-app
-directories:
-  buildResources: build
+extends: ../electron-builder.base.yml
 files:
   - '!**/.vscode/*'
   - '!src/*'

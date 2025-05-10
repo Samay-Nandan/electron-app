@@ -1,10 +1,12 @@
-appId: com.electron.app
-productName: best-electron-app
+extends: electron-builder.base.yml
+
 directories:
   output: build/mac
   app: frontend
+
 files:
   - "**/*"
+
 extraResources:
   - from: build/mac/server/server
     to: server
