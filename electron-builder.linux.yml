@@ -17,6 +17,7 @@ linux:
     - AppImage
   artifactName: "${productName}-${version}_${arch}.${ext}"
   executableName: best-electron-app
+  category: Utility 
 
 deb:
   maintainer: samaynandan@gmail.com
