@@ -69,6 +69,7 @@ jobs:
 
       - name: 📁 Check server output directory
         run: ls -lR ${{ matrix.build_output }}/server || echo "❌ Directory not found!"
+        shell: bash
 
       - name: 🔍 Validate server binary
         run: |
