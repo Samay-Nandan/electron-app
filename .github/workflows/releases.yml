@@ -39,13 +39,13 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: 📦 Install pkg CLI globally
+      - name: 📦 Install pkg CLI
         run: npm install -g pkg
 
-      - name: 🧹 Clean build directory
+      - name: 🧹 Clean build
         run: yarn clean:build
 
-      - name: 🛠️ Build server (tsc)
+      - name: 🛠️ Build server
         run: yarn workspace server build
 
       - name: 📦 Package server binary
@@ -54,27 +54,16 @@ jobs:
           if [[ "${{ matrix.platform }}" == "mac" && "$(uname -m)" == "arm64" ]]; then
             TARGET="node18-${{ matrix.platform }}-arm64"
           fi
-
           mkdir -p "${{ matrix.build_output }}/server"
           echo "Using pkg target: $TARGET"
           pkg . --targets $TARGET --output "${{ matrix.build_output }}/server/server"
-
-          if [ ! -f "${{ matrix.build_output }}/server/server" ]; then
-            echo "❌ pkg did not create the expected binary!"
-            exit 1
-          fi
         working-directory: server
         shell: bash
 
-      - name: 🐛 List server build output (if exists)
-        run: |
-          if [ -d "${{ matrix.build_output }}" ]; then
-            ls -lR "${{ matrix.build_output }}"
-          else
-            echo "⚠️ Directory not found: ${{ matrix.build_output }}"
-          fi
+      - name: 📁 Check server output directory
+        run: ls -lR ${{ matrix.build_output }}/server || echo "❌ Directory not found!"
 
-      - name: 🔍 Ensure server binary exists
+      - name: 🔍 Validate server binary
         run: |
           if [ ! -f "${{ matrix.binary_path }}" ]; then
             echo "❌ Missing binary: ${{ matrix.binary_path }}"
