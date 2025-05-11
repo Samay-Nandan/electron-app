@@ -65,6 +65,7 @@ jobs:
 
           echo "✅ pkg completed"
           ls -lh "$(dirname "$OUTPUT_PATH")" || echo "❌ Could not list server output"
+        shell: bash
 
       - name: 📁 Check server output directory
         run: ls -lR ${{ matrix.build_output }}/server || echo "❌ Directory not found!"
