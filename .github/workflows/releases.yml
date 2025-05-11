@@ -14,12 +14,15 @@ jobs:
           - os: ubuntu-latest
             platform: linux
             binary_path: build/linux/server/server
+            build_output: ${{ github.workspace }}/build/linux
           - os: windows-latest
             platform: win
             binary_path: build/windows/server/server.exe
+            build_output: ${{ github.workspace }}\\build\\windows
           - os: macos-latest
             platform: mac
             binary_path: build/mac/server/server
+            build_output: ${{ github.workspace }}/build/mac
 
     runs-on: ${{ matrix.os }}
 
@@ -43,7 +46,9 @@ jobs:
         run: yarn workspace server build
 
       - name: 📦 Package server binary
-        run: yarn workspace server pkg:${{ matrix.platform }}
+        run: |
+          echo "BUILD_OUTPUT=${{ matrix.build_output }}"
+          BUILD_OUTPUT="${{ matrix.build_output }}" yarn workspace server pkg:${{ matrix.platform }}
 
       - name: 🔍 Ensure server binary exists
         run: |
@@ -56,10 +61,14 @@ jobs:
         shell: bash
 
       - name: 🌐 Build frontend
-        run: yarn workspace frontend build:${{ matrix.platform }}
+        run: |
+          echo "BUILD_OUTPUT=${{ matrix.build_output }}"
+          BUILD_OUTPUT="${{ matrix.build_output }}" yarn workspace frontend build:${{ matrix.platform }}
 
       - name: 🏗️ Package with Electron Builder
-        run: yarn electron-builder --config electron-builder.${{ matrix.platform }}.yml --${{ matrix.platform }}
+        run: |
+          echo "BUILD_OUTPUT=${{ matrix.build_output }}"
+          BUILD_OUTPUT="${{ matrix.build_output }}" yarn electron-builder --config electron-builder.${{ matrix.platform }}.yml --${{ matrix.platform }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
