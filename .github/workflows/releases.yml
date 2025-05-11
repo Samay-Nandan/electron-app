@@ -14,15 +14,15 @@ jobs:
           - os: ubuntu-latest
             platform: linux
             binary_path: build/linux/server/server
-            build_output: ${{ github.workspace }}/build/linux
+            build_output: build/linux
           - os: windows-latest
             platform: win
             binary_path: build/windows/server/server.exe
-            build_output: ${{ github.workspace }}\\build\\windows
+            build_output: build/windows
           - os: macos-latest
             platform: mac
             binary_path: build/mac/server/server
-            build_output: ${{ github.workspace }}/build/mac
+            build_output: build/mac
 
     runs-on: ${{ matrix.os }}
 
