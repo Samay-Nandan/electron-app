@@ -42,6 +42,12 @@ jobs:
       - name: 📦 Install pkg CLI
         run: npm install -g pkg
 
+      - name: 🧪 Typecheck backend
+        run: yarn workspace server typecheck
+
+      - name: 🔍 Lint backend
+        run: yarn workspace server lint
+
       - name: 🛠️ Build server
         run: yarn workspace server build
 
@@ -80,6 +86,12 @@ jobs:
             echo "✅ Found binary: ${{ matrix.binary_path }}"
           fi
         shell: bash
+
+      - name: 🧪 Typecheck frontend
+        run: yarn workspace frontend typecheck
+
+      - name: 🔍 Lint Frontend
+        run: yarn workspace frontend lint
 
       - name: 🌐 Build frontend
         run: yarn workspace frontend build:${{ matrix.platform }}

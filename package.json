@@ -18,7 +18,7 @@
         "build:win": "cross-env-shell BUILD_OUTPUT=$PWD/build/windows yarn workspace server build && cross-env-shell BUILD_OUTPUT=$PWD/build/windows yarn workspace server pkg:win && cross-env-shell BUILD_OUTPUT=$PWD/build/windows yarn workspace frontend build:win && cross-env-shell BUILD_OUTPUT=$PWD/build/windows electron-builder --config electron-builder.win.yml --win && node scripts/windows.js",
         "build:mac": "cross-env-shell BUILD_OUTPUT=$PWD/build/mac yarn workspace server build && cross-env-shell BUILD_OUTPUT=$PWD/build/mac yarn workspace server pkg:mac && cross-env-shell BUILD_OUTPUT=$PWD/build/mac yarn workspace frontend build:mac && cross-env-shell BUILD_OUTPUT=$PWD/build/mac electron-builder --config electron-builder.mac.yml --mac && node scripts/mac.js",
         "build:linux": "cross-env-shell BUILD_OUTPUT=$PWD/build/linux yarn workspace server build && cross-env-shell BUILD_OUTPUT=$PWD/build/linux yarn workspace server pkg:linux && cross-env-shell BUILD_OUTPUT=$PWD/build/linux yarn workspace frontend build:linux && cross-env-shell BUILD_OUTPUT=$PWD/build/linux electron-builder --config electron-builder.linux.yml --linux && node scripts/linux.js",
-        "typecheck": "yarn workspace frontend typecheck && yarn workspace server lint",
+        "typecheck": "yarn workspace frontend typecheck && yarn workspace server typecheck",
         "format": "yarn workspace frontend format && yarn workspace server format",
         "lint": "yarn workspace frontend lint && yarn workspace server lint"
     },
