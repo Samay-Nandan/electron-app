@@ -58,11 +58,21 @@ jobs:
           mkdir -p "${{ matrix.build_output }}/server"
           echo "Using pkg target: $TARGET"
           pkg . --targets $TARGET --output "${{ matrix.build_output }}/server/server"
+
+          if [ ! -f "${{ matrix.build_output }}/server/server" ]; then
+            echo "❌ pkg did not create the expected binary!"
+            exit 1
+          fi
         working-directory: server
         shell: bash
 
-      - name: 🐛 List server build output
-        run: ls -lR ${{ matrix.build_output }}
+      - name: 🐛 List server build output (if exists)
+        run: |
+          if [ -d "${{ matrix.build_output }}" ]; then
+            ls -lR "${{ matrix.build_output }}"
+          else
+            echo "⚠️ Directory not found: ${{ matrix.build_output }}"
+          fi
 
       - name: 🔍 Ensure server binary exists
         run: |
