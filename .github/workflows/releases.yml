@@ -56,21 +56,34 @@ jobs:
 
       - name: 📦 Package server binary
         run: |
-          TARGET="node18-${{ matrix.platform }}-x64"
-          [[ "${{ matrix.platform }}" == "mac" && "$(uname -m)" == "arm64" ]] && TARGET="node18-${{ matrix.platform }}-arm64"
+          set -euo pipefail
 
-          OUTPUT_PATH="${{ matrix.build_output }}/server/server"
-          mkdir -p "$(dirname "$OUTPUT_PATH")"
-          echo "Using pkg target: $TARGET"
-          echo "Output path: $OUTPUT_PATH"
+          PLATFORM="${{ matrix.platform }}"
+          ARCH="x64"
 
-          if ! pkg server/dist/server.js --targets "$TARGET" --output "$OUTPUT_PATH"; then
-            echo "❌ pkg failed to create binary"
-            exit 1
+          # Special case: macOS ARM
+          if [[ "$PLATFORM" == "mac" && "$(uname -m)" == "arm64" ]]; then
+            ARCH="arm64"
           fi
 
-          echo "✅ pkg completed"
-          ls -lh "$(dirname "$OUTPUT_PATH")" || echo "❌ Could not list server output"
+          TARGET="node18-$PLATFORM-$ARCH"
+          OUTPUT_PATH="${{ matrix.build_output }}/server/server"
+
+          mkdir -p "$(dirname "$OUTPUT_PATH")"
+
+          echo "📦 Packaging server binary..."
+          echo "➡️ Platform: $PLATFORM"
+          echo "➡️ Architecture: $ARCH"
+          echo "➡️ pkg target: $TARGET"
+          echo "➡️ Output path: $OUTPUT_PATH"
+
+          # Build the binary
+          pkg server/dist/server.js \
+            --targets "$TARGET" \
+            --output "$OUTPUT_PATH"
+
+          echo "✅ pkg completed successfully"
+          ls -lh "$(dirname "$OUTPUT_PATH")"
         shell: bash
 
       - name: 📁 Check server output directory
