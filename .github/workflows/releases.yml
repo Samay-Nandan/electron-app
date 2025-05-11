@@ -42,9 +42,6 @@ jobs:
       - name: 📦 Install pkg CLI
         run: npm install -g pkg
 
-      - name: 🧹 Clean build
-        run: yarn clean:build
-
       - name: 🛠️ Build server
         run: yarn workspace server build
 
