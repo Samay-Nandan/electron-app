@@ -51,12 +51,14 @@ jobs:
       - name: 📦 Package server binary
         run: |
           echo "BUILD_OUTPUT=${{ matrix.build_output }}"
+
           TARGET="node18-${{ matrix.platform }}-x64"
           if [[ "${{ matrix.platform }}" == "mac" && "$(uname -m)" == "arm64" ]]; then
             TARGET="node18-${{ matrix.platform }}-arm64"
           fi
 
           echo "Using pkg target: $TARGET"
+          mkdir -p "${{ matrix.build_output }}/server"
           BUILD_OUTPUT="${{ matrix.build_output }}" pkg . --targets $TARGET --output $BUILD_OUTPUT/server/server
         working-directory: server
         shell: bash
