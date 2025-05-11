@@ -39,6 +39,9 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: 📦 Install pkg CLI globally
+        run: npm install -g pkg
+
       - name: 🧹 Clean build directory
         run: yarn clean:build
 
