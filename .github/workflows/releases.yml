@@ -48,7 +48,18 @@ jobs:
       - name: 📦 Package server binary
         run: |
           echo "BUILD_OUTPUT=${{ matrix.build_output }}"
-          BUILD_OUTPUT="${{ matrix.build_output }}" yarn workspace server pkg:${{ matrix.platform }}
+          TARGET="node18-${{ matrix.platform }}-x64"
+          if [[ "${{ matrix.platform }}" == "mac" && "$(uname -m)" == "arm64" ]]; then
+            TARGET="node18-${{ matrix.platform }}-arm64"
+          fi
+
+          echo "Using pkg target: $TARGET"
+          BUILD_OUTPUT="${{ matrix.build_output }}" pkg . --targets $TARGET --output $BUILD_OUTPUT/server/server
+        working-directory: server
+        shell: bash
+
+      - name: 🐛 List server build output
+        run: ls -lR ${{ matrix.build_output }}
 
       - name: 🔍 Ensure server binary exists
         run: |
