@@ -58,7 +58,7 @@ jobs:
           echo "Using pkg target: $TARGET"
           echo "Output path: $OUTPUT_PATH"
 
-          if ! pkg --cwd server --targets "$TARGET" --output "$OUTPUT_PATH"; then
+          if ! pkg server/dist/server.js --targets "$TARGET" --output "$OUTPUT_PATH"; then
             echo "❌ pkg failed to create binary"
             exit 1
           fi
