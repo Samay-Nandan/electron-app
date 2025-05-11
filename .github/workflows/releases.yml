@@ -12,23 +12,14 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
           - os: ubuntu-latest
-            build_script: build:linux
-            artifact_paths: |
-              build/linux/**/*.AppImage
-              build/linux/**/*.deb
-            build_output: ${{ github.workspace }}/build/linux
+            platform: linux
+            binary_path: build/linux/server/server
           - os: windows-latest
-            build_script: build:win
-            artifact_paths: |
-              build/windows/**/*.exe
-              build/windows/**/*.zip
-            build_output: ${{ github.workspace }}\build\windows
+            platform: win
+            binary_path: build/windows/server/server.exe
           - os: macos-latest
-            build_script: build:mac
-            artifact_paths: |
-              build/mac/**/*.dmg
-              build/mac/**/*.zip
-            build_output: ${{ github.workspace }}/build/mac
+            platform: mac
+            binary_path: build/mac/server/server
 
     runs-on: ${{ matrix.os }}
 
@@ -45,31 +36,41 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: 🔧 Set BUILD_OUTPUT on Ubuntu
-        if: matrix.os == 'ubuntu-latest'
-        shell: bash
-        run: echo "BUILD_OUTPUT=${{ matrix.build_output }}" >> $GITHUB_ENV
+      - name: 🧹 Clean build directory
+        run: yarn clean:build
 
-      - name: 🔧 Set BUILD_OUTPUT on Windows
-        if: matrix.os == 'windows-latest'
-        shell: pwsh
+      - name: 🛠️ Build server (tsc)
+        run: yarn workspace server build
+
+      - name: 📦 Package server binary
+        run: yarn workspace server pkg:${{ matrix.platform }}
+
+      - name: 🔍 Ensure server binary exists
         run: |
-          "BUILD_OUTPUT=${{ matrix.build_output }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
-      - name: 🔧 Set BUILD_OUTPUT on macOS
-        if: matrix.os == 'macos-latest'
+          if [ ! -f "${{ matrix.binary_path }}" ]; then
+            echo "❌ Missing binary: ${{ matrix.binary_path }}"
+            exit 1
+          else
+            echo "✅ Found binary: ${{ matrix.binary_path }}"
+          fi
         shell: bash
-        run: echo "BUILD_OUTPUT=${{ matrix.build_output }}" >> $GITHUB_ENV
 
-      - name: 🔨 Build full app (${{ matrix.os }})
-        run: yarn ${{ matrix.build_script }}
+      - name: 🌐 Build frontend
+        run: yarn workspace frontend build:${{ matrix.platform }}
+
+      - name: 🏗️ Package with Electron Builder
+        run: yarn electron-builder --config electron-builder.${{ matrix.platform }}.yml --${{ matrix.platform }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          BUILD_OUTPUT: ${{ matrix.build_output }}
 
       - name: 🚀 Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ matrix.artifact_paths }}
+          files: |
+            build/${{ matrix.platform }}/**/*.AppImage
+            build/${{ matrix.platform }}/**/*.deb
+            build/${{ matrix.platform }}/**/*.exe
+            build/${{ matrix.platform }}/**/*.dmg
+            build/${{ matrix.platform }}/**/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
