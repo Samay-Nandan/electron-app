@@ -46,26 +46,25 @@ jobs:
         run: yarn workspace server build
 
       - name: 🗂️ List server build output
-        run: ls -l dist || echo "❌ dist folder not found"
-        working-directory: server
+        run: ls -l server/dist || echo "❌ dist folder not found"
 
       - name: 📦 Package server binary
         run: |
           TARGET="node18-${{ matrix.platform }}-x64"
           [[ "${{ matrix.platform }}" == "mac" && "$(uname -m)" == "arm64" ]] && TARGET="node18-${{ matrix.platform }}-arm64"
 
-          mkdir -p "${{ matrix.build_output }}/server"
+          OUTPUT_PATH="${{ matrix.build_output }}/server/server"
+          mkdir -p "$(dirname "$OUTPUT_PATH")"
           echo "Using pkg target: $TARGET"
+          echo "Output path: $OUTPUT_PATH"
 
-          if ! pkg . --targets $TARGET --output "${{ matrix.build_output }}/server/server"; then
+          if ! pkg --cwd server --targets "$TARGET" --output "$OUTPUT_PATH"; then
             echo "❌ pkg failed to create binary"
             exit 1
           fi
 
           echo "✅ pkg completed"
-          ls -lh "${{ matrix.build_output }}/server" || echo "❌ Could not list server output"
-        working-directory: server
-        shell: bash
+          ls -lh "$(dirname "$OUTPUT_PATH")" || echo "❌ Could not list server output"
 
       - name: 📁 Check server output directory
         run: ls -lR ${{ matrix.build_output }}/server || echo "❌ Directory not found!"
