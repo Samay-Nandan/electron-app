@@ -45,15 +45,25 @@ jobs:
       - name: 🛠️ Build server
         run: yarn workspace server build
 
+      - name: 🗂️ List server build output
+        run: ls -l dist || echo "❌ dist folder not found"
+        working-directory: server
+
       - name: 📦 Package server binary
         run: |
           TARGET="node18-${{ matrix.platform }}-x64"
-          if [[ "${{ matrix.platform }}" == "mac" && "$(uname -m)" == "arm64" ]]; then
-            TARGET="node18-${{ matrix.platform }}-arm64"
-          fi
+          [[ "${{ matrix.platform }}" == "mac" && "$(uname -m)" == "arm64" ]] && TARGET="node18-${{ matrix.platform }}-arm64"
+
           mkdir -p "${{ matrix.build_output }}/server"
           echo "Using pkg target: $TARGET"
-          pkg . --targets $TARGET --output "${{ matrix.build_output }}/server/server"
+
+          if ! pkg . --targets $TARGET --output "${{ matrix.build_output }}/server/server"; then
+            echo "❌ pkg failed to create binary"
+            exit 1
+          fi
+
+          echo "✅ pkg completed"
+          ls -lh "${{ matrix.build_output }}/server" || echo "❌ Could not list server output"
         working-directory: server
         shell: bash
 
