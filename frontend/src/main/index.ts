@@ -3,10 +3,13 @@ import { join } from 'path'
 import { spawn } from 'child_process'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { autoUpdater } from 'electron-updater'
+import { killPorts } from '@shared/utils'
 import icon from '../../resources/icon.png?asset'
 
-function createWindow(): void {
+async function createWindow(): Promise<void> {
   const isProd = app.isPackaged
+
+  await killPorts([3000])
 
   if (isProd) {
     const backendPath = join(process.resourcesPath, 'server')
