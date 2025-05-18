@@ -5,7 +5,7 @@ import { getEnv } from '@config/env';
 
 export const startApp = () => {
   const app = express();
-  const port = getEnv('PORT', 3000);
+  const port = getEnv('NODE_SERVER_PORT');
 
   app.use(cors());
   app.use(express.json());
