@@ -1,26 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
+import { useHealthCheck } from '@renderer/hooks'
 
 function App(): JSX.Element {
-  const [healthStatus, setHealthStatus] = useState<string>('Checking...')
+  const healthStatus = useHealthCheck()
 
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
 
   useEffect(() => {
-    fetch('http://127.0.0.1:3000/api/health')
-      .then((res) => res.json())
-      .then((data) => {
-        setHealthStatus(
-          `✅ Backend OK | Uptime: ${Math.floor(data.uptime)}s | Time: ${data.timestamp}`
-        )
-      })
-      .catch((err) => {
-        setHealthStatus('❌ Backend Unreachable')
-        console.error('Health check failed:', err)
-      })
+    const { ipcRenderer } = window.electron
 
-    window.electron.ipcRenderer.on('update_available', () => {
+    ipcRenderer.on('update_available', () => {
       alert('🚀 Update available. Downloading...')
       console.log('Starting download...')
     })
@@ -33,7 +24,6 @@ function App(): JSX.Element {
     })
     window.electron.ipcRenderer.invoke('get_app_version').then((version) => {
       console.log('App version is:', version)
-      alert(`🚀 Running version: ${version}`)
     })
   }, [])
 

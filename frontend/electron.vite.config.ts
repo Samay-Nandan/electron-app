@@ -26,7 +26,7 @@ export default defineConfig({
       react(),
       {
         name: 'inject-node-server-port',
-        transformIndexHtml(html) {
+        transformIndexHtml(html: string): string {
           return html.replace(/__NODE_SERVER_PORT__/g, getEnv('NODE_SERVER_PORT'))
         }
       }

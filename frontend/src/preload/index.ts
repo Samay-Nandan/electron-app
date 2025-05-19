@@ -1,8 +1,11 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { getEnv } from '@shared/utils'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  NODE_SERVER_PORT: getEnv('NODE_SERVER_PORT')
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
