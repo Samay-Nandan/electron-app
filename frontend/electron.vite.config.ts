@@ -16,6 +16,9 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   preload: {
+    resolve: {
+      alias: sharedAlias
+    },
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
@@ -27,7 +30,7 @@ export default defineConfig({
       {
         name: 'inject-node-server-port',
         transformIndexHtml(html: string): string {
-          return html.replace(/__NODE_SERVER_PORT__/g, getEnv('NODE_SERVER_PORT'))
+          return html.replace(/__NODE_SERVER_URL__/g, getEnv('NODE_SERVER_URL'))
         }
       }
     ]

@@ -4,9 +4,7 @@ declare global {
   interface Window {
     electron: ElectronAPI
     api: {
-      env: {
-        NODE_SERVER_PORT: string
-      }
+      NODE_SERVER_URL: string
     }
   }
 }

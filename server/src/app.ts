@@ -12,6 +12,6 @@ export const startApp = () => {
   app.use('/api', routes);
 
   app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    console.log(`Server running on ${getEnv('NODE_SERVER_URL')}`);
   });
 };

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { apiNodeServer, nodeServerEndpoints } from '@renderer/constants'
 
 export const useHealthCheck = (): string => {
   const [status, setStatus] = useState<string>('Checking...')
@@ -6,9 +7,7 @@ export const useHealthCheck = (): string => {
   useEffect(() => {
     const fetchHealthStatus = async (): Promise<void> => {
       try {
-        const port = window.api.env.NODE_SERVER_PORT
-        const response = await fetch(`http://127.0.0.1:${port}/api/health`)
-        const data = await response.json()
+        const { data } = await apiNodeServer.get(nodeServerEndpoints.HEALTH_CHECK)
         setStatus(`✅ Backend OK | Uptime: ${Math.floor(data.uptime)}s | Time: ${data.timestamp}`)
       } catch {
         setStatus('❌ Backend Unreachable')
