@@ -1,0 +1,17 @@
+{
+    "name": "ai",
+    "version": "1.0.0",
+    "license": "MIT",
+    "scripts": {
+        "setup": "poetry install --no-root",
+        "format": "echo 'Format step (Python): handled by black/ruff if needed'",
+        "lint": "echo 'Lint step (Python): placeholder for ruff/mypy'",
+        "typecheck": "echo 'Typecheck step (Python): placeholder for mypy/pyright'",
+        "dev": "poetry run uvicorn src.main:app --host 127.0.0.1 --port 8001 --reload",
+        "build": "echo 'Build step (Python): placeholder for pyinstaller'",
+        "pkg:linux": "pyinstaller --onefile src/main.py --distpath dist/ai",
+        "pkg:mac": "pyinstaller --onefile src/main.py --distpath dist/ai",
+        "pkg:win": "pyinstaller --onefile src/main.py --distpath dist/ai",
+        "start": "dist/ai/ai || dist/ai/ai.exe"
+    }
+}

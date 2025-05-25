@@ -1,3 +1,31 @@
+# Prerequisites
+
+### 1. Node.js (via NVM)
+
+- Install [**NVM**](https://github.com/nvm-sh/nvm)
+- Use **Node.js v20 or higher**
+
+```bash
+nvm install 20
+nvm use 20
+```
+
+### 2. Python Environment (via Miniconda)
+
+- Install [**MINICONDA**](https://www.anaconda.com/docs/getting-started/miniconda/install)
+
+- Create Conda Environment
+
+```bash
+conda create -n py311 python=3.11 && conda activate py311
+```
+
+- Install Poetry
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
 # Linux Production
 
 ## Install the Application
