@@ -8,10 +8,10 @@
         "lint": "ruff check",
         "typecheck": "mypy",
         "dev": "poetry run python src/main.py",
-        "build": "pyinstaller --onefile src/main.py --distpath dist/ai",
-        "pkg:linux": "pyinstaller --onefile src/main.py --distpath dist/ai",
-        "pkg:mac": "pyinstaller --onefile src/main.py --distpath dist/ai",
-        "pkg:win": "pyinstaller --onefile src/main.py --distpath dist/ai",
-        "start": "dist/ai/ai || dist/ai/ai.exe"
+        "build": "poetry run pyinstaller --onefile src/main.py --distpath dist --paths src",
+        "pkg:linux": "poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src",
+        "pkg:mac": "poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src",
+        "pkg:win": "poetry run pyinstaller --onefile src/main.py --distpath %BUILD_OUTPUT%\\ai --name main.exe --paths src",
+        "start": "cross-env-shell \"[ -x dist/main ] && dist/main || [ -x dist/main.exe ] && dist/main.exe\""
     }
 }
