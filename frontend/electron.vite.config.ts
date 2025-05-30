@@ -5,7 +5,8 @@ import { getEnv } from './src/shared'
 
 const sharedAlias = {
   '@renderer': resolve(__dirname, 'src/renderer/src'),
-  '@shared': resolve(__dirname, 'src/shared')
+  '@shared': resolve(__dirname, 'src/shared'),
+  '@main': resolve(__dirname, 'src/main')
 }
 
 export default defineConfig({
