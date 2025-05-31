@@ -7,7 +7,7 @@
         "format": "black src",
         "lint": "ruff check",
         "typecheck": "mypy",
-        "dev": "poetry run python src/main.py",
+        "dev": "poetry run python src/main.py reload",
         "build": "poetry run pyinstaller --onefile src/main.py --distpath dist --paths src",
         "pkg:linux": "poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src",
         "pkg:mac": "poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src",

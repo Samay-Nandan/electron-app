@@ -5,6 +5,7 @@ declare global {
     electron: ElectronAPI
     api: {
       NODE_SERVER_URL: string
+      AI_SERVER_URL: string
     }
   }
 }

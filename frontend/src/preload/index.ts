@@ -4,7 +4,8 @@ import { getEnv } from '@shared/utils'
 
 // Custom APIs for renderer
 const api = {
-  NODE_SERVER_URL: getEnv('NODE_SERVER_URL')
+  NODE_SERVER_URL: getEnv('NODE_SERVER_URL'),
+  AI_SERVER_URL: getEnv('AI_SERVER_URL')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

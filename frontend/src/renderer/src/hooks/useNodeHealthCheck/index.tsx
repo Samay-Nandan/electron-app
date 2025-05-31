@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { apiNodeServer, nodeServerEndpoints } from '@renderer/constants'
 
-export const useHealthCheck = (): string => {
+export const useNodeHealthCheck = (): string => {
   const [status, setStatus] = useState<string>('Checking...')
 
   useEffect(() => {
     const fetchHealthStatus = async (): Promise<void> => {
       try {
         const { data } = await apiNodeServer.get(nodeServerEndpoints.HEALTH_CHECK)
-        setStatus(`✅ Backend OK | Uptime: ${Math.floor(data.uptime)}s | Time: ${data.timestamp}`)
+        setStatus(`✅ Backend Server: ${data.status} `)
       } catch {
-        setStatus('❌ Backend Unreachable')
+        setStatus('❌ Backend Server Unreachable')
       }
     }
 

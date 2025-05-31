@@ -3,6 +3,6 @@ from fastapi import APIRouter
 router = APIRouter()
 
 
-@router.get("/status")
+@router.get("/health")
 def get_status():
-    return {"service": "ai-engine", "status": "ready"}
+    return {"status": "Ready"}

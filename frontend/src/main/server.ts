@@ -1,14 +1,14 @@
 import { spawn } from 'child_process'
 import { join } from 'path'
 import { app } from 'electron'
-import { getEnv, killPorts } from '@shared/index'
+import { getEnv, killPort } from '@shared/index'
 
 let backend: ReturnType<typeof spawn> | null = null
 
 export const launchServer = async (): Promise<void> => {
   if (!app.isPackaged) return
 
-  await killPorts([+getEnv('NODE_SERVER_PORT')])
+  await killPort(+getEnv('NODE_SERVER_PORT'))
 
   const backendPath = join(process.resourcesPath, 'server')
   backend = spawn(backendPath, [], { stdio: 'inherit' })

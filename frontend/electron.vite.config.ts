@@ -33,6 +33,12 @@ export default defineConfig({
         transformIndexHtml(html: string): string {
           return html.replace(/__NODE_SERVER_URL__/g, getEnv('NODE_SERVER_URL'))
         }
+      },
+      {
+        name: 'inject-ai-server-port',
+        transformIndexHtml(html: string): string {
+          return html.replace(/__AI_SERVER_URL__/g, getEnv('AI_SERVER_URL'))
+        }
       }
     ]
   }
