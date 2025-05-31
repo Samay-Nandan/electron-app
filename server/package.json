@@ -10,9 +10,9 @@
     "typecheck": "tsc --noEmit -p tsconfig.json --composite false",
     "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/server.ts",
     "build": "tsc -p . && tsc-alias",
-    "pkg:linux": "pkg . --targets node18-linux-x64 --output $BUILD_OUTPUT/server/server",
-    "pkg:mac": "pkg . --targets node18-macos-x64 --output $BUILD_OUTPUT/server/server",
-    "pkg:win": "pkg . --targets node18-win-x64 --output $BUILD_OUTPUT/server/server.exe",
+    "pkg:linux": "cross-env-shell pkg . --targets node18-linux-x64 --output $BUILD_OUTPUT/server/server",
+    "pkg:mac": "cross-env-shell pkg . --targets node18-macos-x64 --output $BUILD_OUTPUT/server/server",
+    "pkg:win": "cross-env-shell pkg . --targets node18-win-x64 --output $BUILD_OUTPUT/server/server.exe",
     "start": "node -r tsconfig-paths/register dist/server.js"
   },
   "dependencies": {

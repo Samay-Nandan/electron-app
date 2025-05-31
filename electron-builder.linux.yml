@@ -10,6 +10,8 @@ files:
 extraResources:
   - from: build/linux/server/server
     to: server
+  - from: build/linux/ai/main
+    to: ai
 
 linux:
   target:
@@ -17,7 +19,7 @@ linux:
     - AppImage
   artifactName: "${productName}-${version}_${arch}.${ext}"
   executableName: best-electron-app
-  category: Utility 
+  category: Utility
 
 deb:
   maintainer: samaynandan@gmail.com

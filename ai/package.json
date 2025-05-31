@@ -9,9 +9,9 @@
         "typecheck": "mypy",
         "dev": "poetry run python src/main.py reload",
         "build": "poetry run pyinstaller --onefile src/main.py --distpath dist --paths src",
-        "pkg:linux": "poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src",
-        "pkg:mac": "poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src",
-        "pkg:win": "poetry run pyinstaller --onefile src/main.py --distpath %BUILD_OUTPUT%\\ai --name main.exe --paths src",
+        "pkg:linux": "cross-env-shell poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src",
+        "pkg:mac": "cross-env-shell poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src",
+        "pkg:win": "cross-env-shell poetry run pyinstaller --onefile src/main.py --distpath %BUILD_OUTPUT%\\ai --name main.exe --paths src",
         "start": "cross-env-shell \"[ -x dist/main ] && dist/main || [ -x dist/main.exe ] && dist/main.exe\""
     }
 }

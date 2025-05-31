@@ -10,6 +10,8 @@ files:
 extraResources:
   - from: build/mac/server/server
     to: server
+  - from: build/mac/ai/main
+    to: ai
 
 mac:
   entitlementsInherit: build/entitlements.mac.plist
