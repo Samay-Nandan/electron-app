@@ -60,6 +60,7 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH  # for Linux/macOS
           echo "$USERPROFILE\\.poetry\\bin" >> $GITHUB_PATH  # for Windows
           echo "$APPDATA\\Python\\Scripts" >> $GITHUB_PATH  # backup path for Windows
+        shell: bash
 
       - name: 📦 Install AI dependencies
         run: poetry install --no-root
