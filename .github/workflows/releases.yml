@@ -13,15 +13,18 @@ jobs:
         include:
           - os: ubuntu-latest
             platform: linux
-            binary_path: build/linux/server/server
+            server_binary_path: build/linux/server/server
+            ai_binary_path: build/linux/ai/main
             build_output: build/linux
           - os: windows-latest
             platform: win
-            binary_path: build/windows/server/server.exe
+            server_binary_path: build/windows/server/server.exe
+            ai_binary_path: build/windows/ai/main.exe
             build_output: build/windows
           - os: macos-latest
             platform: mac
-            binary_path: build/mac/server/server
+            server_binary_path: build/mac/server/server
+            ai_binary_path: build/mac/ai/main
             build_output: build/mac
 
     runs-on: ${{ matrix.os }}
@@ -41,6 +44,18 @@ jobs:
 
       - name: 📦 Install pkg CLI
         run: npm install -g pkg
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install Poetry
+        run: curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: 📦 Install AI dependencies
+        run: poetry install --no-root
+        working-directory: ai
 
       - name: 🧪 Typecheck backend
         run: yarn workspace server typecheck
@@ -92,11 +107,37 @@ jobs:
 
       - name: 🔍 Validate server binary
         run: |
-          if [ ! -f "${{ matrix.binary_path }}" ]; then
-            echo "❌ Missing binary: ${{ matrix.binary_path }}"
+          if [ ! -f "${{ matrix.server_binary_path }}" ]; then
+            echo "❌ Missing binary: ${{ matrix.server_binary_path }}"
             exit 1
           else
-            echo "✅ Found binary: ${{ matrix.binary_path }}"
+            echo "✅ Found binary: ${{ matrix.server_binary_path }}"
+          fi
+        shell: bash
+
+      - name: 🛠️ Build AI
+        run: yarn workspace ai build
+
+      - name: 📦 Package AI binary
+        run: |
+          PLATFORM="${{ matrix.platform }}"
+
+          if [ "$PLATFORM" = "linux" ]; then
+            yarn workspace ai run pkg:linux
+          elif [ "$PLATFORM" = "win" ]; then
+            yarn workspace ai run pkg:win
+          elif [ "$PLATFORM" = "mac" ]; then
+            yarn workspace ai run pkg:mac
+          fi
+        shell: bash
+
+      - name: 🔍 Validate AI binary
+        run: |
+          if [ ! -f "${{ matrix.ai_binary_path }}" ]; then
+            echo "❌ Missing AI binary: ${{ matrix.ai_binary_path }}"
+            exit 1
+          else
+            echo "✅ Found AI binary: ${{ matrix.ai_binary_path }}"
           fi
         shell: bash
 
