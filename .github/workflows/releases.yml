@@ -39,6 +39,9 @@ jobs:
           node-version: 20
           cache: "yarn"
 
+      - name: 🛠️ Disable lifecycle scripts in CI
+        run: npm config set ignore-scripts true
+
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
