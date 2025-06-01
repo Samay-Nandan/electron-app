@@ -33,21 +33,6 @@ jobs:
       - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🧰 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "yarn"
-
-      - name: 🛠️ Skip postinstall in CI
-        run: echo "YARN_IGNORE_SCRIPTS=true" >> $GITHUB_ENV
-
-      - name: 📦 Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: 📦 Install pkg CLI
-        run: npm install -g pkg
-
       - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
@@ -72,6 +57,21 @@ jobs:
         run: poetry --version
         shell: bash
 
+      - name: 🧰 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: 🛠️ Skip postinstall in CI
+        run: echo "YARN_IGNORE_SCRIPTS=true" >> $GITHUB_ENV
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: 📦 Install pkg CLI
+        run: npm install -g pkg
+
       - name: 📦 Install AI dependencies
         run: poetry install --no-root
         working-directory: ai
@@ -95,7 +95,6 @@ jobs:
           PLATFORM="${{ matrix.platform }}"
           ARCH="x64"
 
-          # Special case: macOS ARM
           if [[ "$PLATFORM" == "mac" && "$(uname -m)" == "arm64" ]]; then
             ARCH="arm64"
           fi
@@ -105,18 +104,14 @@ jobs:
 
           mkdir -p "$(dirname "$OUTPUT_PATH")"
 
-          echo "📦 Packaging server binary..."
           echo "➡️ Platform: $PLATFORM"
           echo "➡️ Architecture: $ARCH"
-          echo "➡️ pkg target: $TARGET"
           echo "➡️ Output path: $OUTPUT_PATH"
 
-          # Build the binary
           pkg server/dist/server.js \
             --targets "$TARGET" \
             --output "$OUTPUT_PATH"
 
-          echo "✅ pkg completed successfully"
           ls -lh "$(dirname "$OUTPUT_PATH")"
         shell: bash
 
@@ -164,7 +159,7 @@ jobs:
       - name: 🧪 Typecheck frontend
         run: yarn workspace frontend typecheck
 
-      - name: 🔍 Lint Frontend
+      - name: 🔍 Lint frontend
         run: yarn workspace frontend lint
 
       - name: 🌐 Build frontend
