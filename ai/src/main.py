@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.routes.index import register_routes
-from src.config.env import AI_SERVER_HOST, AI_SERVER_PORT
+from src.config.index import AI_SERVER_HOST, AI_SERVER_PORT
 
 
 def create_app() -> FastAPI:

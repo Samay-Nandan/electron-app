@@ -1,9 +1,8 @@
 import { autoUpdater } from 'electron-updater'
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { getEnv } from '@shared/utils'
 
 export const setupAutoUpdater = (): void => {
-  if (!app.isPackaged || !getEnv('APPIMAGE')) {
+  if (!app.isPackaged) {
     console.log('Auto-update skipped: development environment.')
     return
   }

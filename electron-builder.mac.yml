@@ -12,6 +12,8 @@ extraResources:
     to: server
   - from: build/mac/ai/main
     to: ai
+  - from: config.json
+    to: config.json
 
 mac:
   entitlementsInherit: build/entitlements.mac.plist

@@ -12,6 +12,8 @@ extraResources:
     to: server
   - from: build/windows/ai/main.exe
     to: ai
+  - from: config.json
+    to: config.json
 
 win:
   target:

@@ -12,6 +12,8 @@ extraResources:
     to: server
   - from: build/linux/ai/main
     to: ai
+  - from: config.json
+    to: config.json
 
 linux:
   target:
