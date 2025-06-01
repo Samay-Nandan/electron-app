@@ -39,8 +39,8 @@ jobs:
           node-version: 20
           cache: "yarn"
 
-      - name: 🛠️ Disable lifecycle scripts in CI
-        run: npm config set ignore-scripts true
+      - name: 🛠️ Skip postinstall in CI
+        run: echo "YARN_IGNORE_SCRIPTS=true" >> $GITHUB_ENV
 
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
