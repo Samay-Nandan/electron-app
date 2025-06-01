@@ -124,14 +124,14 @@ jobs:
       - name: 📦 Package AI binary
         run: |
           PLATFORM="${{ matrix.platform }}"
-          export BUILD_OUTPUT="${{ matrix.build_output }}"
+          export BUILD_OUTPUT="$(pwd)/${{ matrix.build_output }}"
 
           if [ "$PLATFORM" = "linux" ]; then
-            yarn run ai:pkg:linux
+            yarn workspace ai run pkg:linux
           elif [ "$PLATFORM" = "win" ]; then
-            yarn run ai:pkg:win
+            yarn workspace ai run pkg:win
           elif [ "$PLATFORM" = "mac" ]; then
-            yarn run ai:pkg:mac
+            yarn workspace ai run pkg:mac
           fi
         shell: bash
 
