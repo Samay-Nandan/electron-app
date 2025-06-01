@@ -23,7 +23,7 @@ conda create -n py311 python=3.11 && conda activate py311
 - Install Poetry
 
 ```bash
-curl -sSL https://install.python-poetry.org | python3 -
+python -m pip install --upgrade pip && pip install poetry
 ```
 
 # Linux Production
