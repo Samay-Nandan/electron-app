@@ -124,6 +124,7 @@ jobs:
       - name: 📦 Package AI binary
         run: |
           PLATFORM="${{ matrix.platform }}"
+          export BUILD_OUTPUT="${{ matrix.build_output }}"
 
           if [ "$PLATFORM" = "linux" ]; then
             yarn workspace ai run pkg:linux
