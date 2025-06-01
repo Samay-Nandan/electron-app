@@ -57,9 +57,19 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install poetry
-          echo "$HOME/.local/bin" >> $GITHUB_PATH  # for Linux/macOS
-          echo "$USERPROFILE\\.poetry\\bin" >> $GITHUB_PATH  # for Windows
-          echo "$APPDATA\\Python\\Scripts" >> $GITHUB_PATH  # backup path for Windows
+        shell: bash
+
+      - name: ➕ Add Poetry to PATH (cross-platform)
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            echo "$APPDATA/Python/Scripts" >> $GITHUB_PATH
+          else
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
+          fi
+        shell: bash
+
+      - name: 🧪 Confirm Poetry is available
+        run: poetry --version
         shell: bash
 
       - name: 📦 Install AI dependencies
