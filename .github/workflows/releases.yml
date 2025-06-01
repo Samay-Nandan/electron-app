@@ -127,11 +127,11 @@ jobs:
           export BUILD_OUTPUT="${{ matrix.build_output }}"
 
           if [ "$PLATFORM" = "linux" ]; then
-            yarn workspace ai run pkg:linux
+            yarn run ai:pkg:linux
           elif [ "$PLATFORM" = "win" ]; then
-            yarn workspace ai run pkg:win
+            yarn run ai:pkg:win
           elif [ "$PLATFORM" = "mac" ]; then
-            yarn workspace ai run pkg:mac
+            yarn run ai:pkg:mac
           fi
         shell: bash
 
