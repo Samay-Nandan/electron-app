@@ -53,18 +53,11 @@ jobs:
           fi
         shell: bash
 
-      - name: 🧪 Confirm Poetry is available
-        run: poetry --version
-        shell: bash
-
       - name: 🧰 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "yarn"
-
-      - name: 🛠️ Skip postinstall in CI
-        run: echo "YARN_IGNORE_SCRIPTS=true" >> $GITHUB_ENV
 
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
@@ -76,17 +69,14 @@ jobs:
         run: poetry install --no-root
         working-directory: ai
 
-      - name: 🧪 Typecheck backend
-        run: yarn workspace server typecheck
+      - name: 🧪 Run root typecheck
+        run: yarn typecheck
 
-      - name: 🔍 Lint backend
-        run: yarn workspace server lint
+      - name: 🔍 Run root lint
+        run: yarn lint
 
       - name: 🛠️ Build server
         run: yarn workspace server build
-
-      - name: 🗂️ List server build output
-        run: ls -l server/dist || echo "❌ dist folder not found"
 
       - name: 📦 Package server binary
         run: |
@@ -113,10 +103,6 @@ jobs:
             --output "$OUTPUT_PATH"
 
           ls -lh "$(dirname "$OUTPUT_PATH")"
-        shell: bash
-
-      - name: 📁 Check server output directory
-        run: ls -lR ${{ matrix.build_output }}/server || echo "❌ Directory not found!"
         shell: bash
 
       - name: 🔍 Validate server binary
@@ -155,12 +141,6 @@ jobs:
             echo "✅ Found AI binary: ${{ matrix.ai_binary_path }}"
           fi
         shell: bash
-
-      - name: 🧪 Typecheck frontend
-        run: yarn workspace frontend typecheck
-
-      - name: 🔍 Lint frontend
-        run: yarn workspace frontend lint
 
       - name: 🌐 Build frontend
         run: yarn workspace frontend build:${{ matrix.platform }}
