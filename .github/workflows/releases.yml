@@ -9,19 +9,20 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             platform: linux
             server_binary_path: build/linux/server/server
             ai_binary_path: build/linux/ai/main
             build_output: build/linux
-          - os: windows-latest
+
+          - os: windows-2019
             platform: win
             server_binary_path: build/windows/server/server.exe
             ai_binary_path: build/windows/ai/main.exe
             build_output: build/windows
-          - os: macos-latest
+
+          - os: macos-12
             platform: mac
             server_binary_path: build/mac/server/server
             ai_binary_path: build/mac/ai/main
@@ -70,17 +71,18 @@ jobs:
 
       - name: 🛠️ Build server
         run: yarn workspace server build
-              
+
       - name: 📦 Package server binary
         run: |
-          PLATFORM="${{ matrix.platform }}"
           export BUILD_OUTPUT="$(pwd)/${{ matrix.build_output }}"
+          PLATFORM="${{ matrix.platform }}"
 
           if [ "$PLATFORM" = "linux" ]; then
             yarn workspace server run pkg:linux
           elif [ "$PLATFORM" = "win" ]; then
             yarn workspace server run pkg:win
           elif [ "$PLATFORM" = "mac" ]; then
+            export MACOSX_DEPLOYMENT_TARGET=11.0
             yarn workspace server run pkg:mac
           fi
         shell: bash
@@ -100,14 +102,15 @@ jobs:
 
       - name: 📦 Package AI binary
         run: |
-          PLATFORM="${{ matrix.platform }}"
           export BUILD_OUTPUT="$(pwd)/${{ matrix.build_output }}"
+          PLATFORM="${{ matrix.platform }}"
 
           if [ "$PLATFORM" = "linux" ]; then
             yarn workspace ai run pkg:linux
           elif [ "$PLATFORM" = "win" ]; then
             yarn workspace ai run pkg:win
           elif [ "$PLATFORM" = "mac" ]; then
+            export MACOSX_DEPLOYMENT_TARGET=11.0
             yarn workspace ai run pkg:mac
           fi
         shell: bash
