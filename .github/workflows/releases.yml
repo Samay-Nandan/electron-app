@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             platform: linux
             server_binary_path: build/linux/server/server
             ai_binary_path: build/linux/ai/main
