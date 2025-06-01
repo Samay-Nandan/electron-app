@@ -62,13 +62,6 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: 📦 Install pkg CLI
-        run: npm install -g pkg
-
-      - name: 📦 Install AI dependencies
-        run: poetry install --no-root
-        working-directory: ai
-
       - name: 🧪 Run root typecheck
         run: yarn typecheck
 
@@ -91,7 +84,6 @@ jobs:
             yarn workspace server run pkg:mac
           fi
         shell: bash
-
 
       - name: 🔍 Validate server binary
         run: |
