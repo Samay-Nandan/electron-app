@@ -1,7 +1,9 @@
 import os
 import json
 
-monorepo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+monorepo_root = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "..")
+)
 config_path = os.path.join(monorepo_root, "config.json")
 
 with open(config_path, "r") as f:

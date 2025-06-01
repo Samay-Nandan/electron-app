@@ -1,7 +1,9 @@
 import fs from 'fs'
-import path from 'path'
+import findUp from 'find-up'
 
-const configPath = path.resolve(__dirname, '..', '..', 'config.json')
+const configPath = findUp.sync('config.json', { cwd: __dirname })
+if (!configPath) throw new Error('config.json not found!')
+
 const configData = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
 
 export const getEnv = (key: string, fallback?: string): string => {
