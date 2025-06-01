@@ -77,41 +77,29 @@ jobs:
 
       - name: 🛠️ Build server
         run: yarn workspace server build
-
+              
       - name: 📦 Package server binary
         run: |
-          set -euo pipefail
-
           PLATFORM="${{ matrix.platform }}"
-          ARCH="x64"
+          export BUILD_OUTPUT="$(pwd)/${{ matrix.build_output }}"
 
-          if [[ "$PLATFORM" == "mac" && "$(uname -m)" == "arm64" ]]; then
-            ARCH="arm64"
+          if [ "$PLATFORM" = "linux" ]; then
+            yarn workspace server run pkg:linux
+          elif [ "$PLATFORM" = "win" ]; then
+            yarn workspace server run pkg:win
+          elif [ "$PLATFORM" = "mac" ]; then
+            yarn workspace server run pkg:mac
           fi
-
-          TARGET="node18-$PLATFORM-$ARCH"
-          OUTPUT_PATH="${{ matrix.build_output }}/server/server"
-
-          mkdir -p "$(dirname "$OUTPUT_PATH")"
-
-          echo "➡️ Platform: $PLATFORM"
-          echo "➡️ Architecture: $ARCH"
-          echo "➡️ Output path: $OUTPUT_PATH"
-
-          pkg server/dist/server.js \
-            --targets "$TARGET" \
-            --output "$OUTPUT_PATH"
-
-          ls -lh "$(dirname "$OUTPUT_PATH")"
         shell: bash
+
 
       - name: 🔍 Validate server binary
         run: |
           if [ ! -f "${{ matrix.server_binary_path }}" ]; then
-            echo "❌ Missing binary: ${{ matrix.server_binary_path }}"
+            echo "❌ Missing Node binary: ${{ matrix.server_binary_path }}"
             exit 1
           else
-            echo "✅ Found binary: ${{ matrix.server_binary_path }}"
+            echo "✅ Found Node binary: ${{ matrix.server_binary_path }}"
           fi
         shell: bash
 
