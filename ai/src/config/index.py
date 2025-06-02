@@ -1,10 +1,19 @@
 import os
+import sys
 import json
 
-monorepo_root = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "..")
-)
-config_path = os.path.join(monorepo_root, "config.json")
+
+def get_config_path():
+    if getattr(sys, "frozen", False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", "..", "..")
+        )
+    return os.path.join(base_path, "config.json")
+
+
+config_path = get_config_path()
 
 with open(config_path, "r") as f:
     config = json.load(f)
