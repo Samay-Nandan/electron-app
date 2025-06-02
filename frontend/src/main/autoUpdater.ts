@@ -27,7 +27,7 @@ export const setupAutoUpdater = (): void => {
   })
 
   autoUpdater.on('download-progress', (progress) => {
-    console.log('Download progress:', progress)
+    console.log('Download progress: ', progress.percent.toFixed(2) + '%')
   })
 
   autoUpdater.on('update-downloaded', () => {

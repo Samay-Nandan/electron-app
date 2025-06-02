@@ -7,7 +7,7 @@ def find_up(filename: str, start_path: str = ".") -> str | None:
     path = os.path.abspath(start_path)
     while True:
         candidate = os.path.join(path, filename)
-        if os.path.exists(candidate):
+        if os.path.isfile(candidate):
             return candidate
         parent = os.path.dirname(path)
         if parent == path:
