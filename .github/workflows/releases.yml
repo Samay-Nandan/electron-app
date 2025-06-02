@@ -22,7 +22,7 @@ jobs:
             ai_binary_path: build/windows/ai/main.exe
             build_output: build/windows
 
-          - os: macos-12
+          - os: macos-latest
             platform: mac
             server_binary_path: build/mac/server/server
             ai_binary_path: build/mac/ai/main
