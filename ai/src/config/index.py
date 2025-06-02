@@ -17,7 +17,12 @@ def find_up(filename: str, start_path: str = ".") -> str | None:
 
 def get_config_path():
     if getattr(sys, "frozen", False):
-        return os.path.join(sys._MEIPASS, "config.json")
+        config_path = os.path.join(sys._MEIPASS, "config.json")
+        if os.path.isfile(config_path):
+            return config_path
+        raise FileNotFoundError(
+            f"Expected config.json at {config_path}, but not found or not a file."
+        )
     config_path = find_up("config.json", start_path=os.path.dirname(__file__))
     if config_path:
         return config_path

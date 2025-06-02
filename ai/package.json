@@ -9,9 +9,9 @@
         "typecheck": "mypy",
         "dev": "poetry run python src/main.py reload",
         "build": "poetry run pyinstaller --onefile src/main.py --distpath dist --paths src",
-        "pkg:linux": "cross-env-shell poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src --add-data=\"$CONFIG_PATH:config.json\"",
-        "pkg:mac": "cross-env-shell poetry run pyinstaller --onefile src/main.py --distpath $BUILD_OUTPUT/ai --name main --paths src --add-data=\"$CONFIG_PATH:config.json\"",
-        "pkg:win": "cross-env-shell poetry run pyinstaller --onefile src/main.py --distpath %BUILD_OUTPUT%\\ai --name main.exe --paths src --add-data \"%CONFIG_PATH%;config.json\"",
+        "pkg:linux": "poetry run pyinstaller --onefile src/main.py --distpath build/linux/ai --name main --paths src --add-data=\"config.json:config.json\"",
+        "pkg:mac": "poetry run pyinstaller --onefile src/main.py --distpath build/mac/ai --name main --paths src --add-data=\"config.json:config.json\"",
+        "pkg:win": "poetry run pyinstaller --onefile src/main.py --distpath build/windows/ai --name main.exe --paths src --add-data \"config.json;config.json\"",
         "start": "cross-env-shell \"[ -x dist/main ] && dist/main || [ -x dist/main.exe ] && dist/main.exe\""
     }
 }
