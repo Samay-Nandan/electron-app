@@ -3,19 +3,28 @@ import sys
 import json
 
 
+def find_up(filename: str, start_path: str = ".") -> str | None:
+    path = os.path.abspath(start_path)
+    while True:
+        candidate = os.path.join(path, filename)
+        if os.path.exists(candidate):
+            return candidate
+        parent = os.path.dirname(path)
+        if parent == path:
+            return None
+        path = parent
+
+
 def get_config_path():
     if getattr(sys, "frozen", False):
-        base_path = sys._MEIPASS
-    else:
-        base_path = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "..", "..")
-        )
-    return os.path.join(base_path, "config.json")
+        return os.path.join(sys._MEIPASS, "config.json")
+    config_path = find_up("config.json", start_path=os.path.dirname(__file__))
+    if config_path:
+        return config_path
+    raise FileNotFoundError("config.json not found")
 
 
-config_path = get_config_path()
-
-with open(config_path, "r") as f:
+with open(get_config_path(), "r") as f:
     config = json.load(f)
 
 AI_SERVER_HOST = config.get("AI_SERVER_HOST")

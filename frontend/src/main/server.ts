@@ -1,5 +1,5 @@
 import { spawn } from 'child_process'
-import { join } from 'path'
+import { join, resolve } from 'path'
 import { app } from 'electron'
 import { getEnv, killPort } from '@shared/index'
 
@@ -11,10 +11,19 @@ export const launchNodeServer = async (): Promise<void> => {
   await killPort(+getEnv('NODE_SERVER_PORT'))
 
   const nodeServerPath = join(process.resourcesPath, 'server')
-  nodeServer = spawn(nodeServerPath, [], { stdio: 'inherit' })
+  const configPath = resolve(process.resourcesPath, 'config.json')
+
+  nodeServer = spawn(nodeServerPath, [], {
+    stdio: 'inherit',
+    cwd: process.resourcesPath,
+    env: {
+      ...process.env,
+      CONFIG_PATH: configPath
+    }
+  })
 
   nodeServer.on('exit', (code) => {
-    console.log(`Backend exited with code ${code}`)
+    console.log(`Node server exited with code ${code}`)
   })
 
   nodeServer.on('error', (err) => {
