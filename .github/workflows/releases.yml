@@ -110,8 +110,8 @@ jobs:
           elif [ "$PLATFORM" = "win" ]; then
             yarn workspace ai run pkg:win
           elif [ "$PLATFORM" = "mac" ]; then
-            export MACOSX_DEPLOYMENT_TARGET=11.0
-            poetry run pyinstaller --clean --exclude-module rapidfuzz.__pyinstaller pyinstaller.spec --distpath build/mac/ai
+            cd ai
+            poetry run pyinstaller --clean --exclude-module rapidfuzz.__pyinstaller pyinstaller.spec --distpath ../build/mac/ai
           fi
         shell: bash
 
