@@ -16,7 +16,7 @@ a = Analysis(
     ],
     hookspath=[],
     runtime_hooks=[],
-    excludes=[],
+    excludes=["rapidfuzz.__pyinstaller"],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     noarchive=False,
