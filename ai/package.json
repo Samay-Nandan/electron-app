@@ -8,10 +8,10 @@
         "lint": "ruff check",
         "typecheck": "mypy",
         "dev": "poetry run python src/main.py reload",
-        "build": "poetry run pyinstaller --onefile src/main.py --distpath dist --paths src",
-        "pkg:linux": "poetry run pyinstaller --onefile src/main.py --distpath build/linux/ai --name main --paths src --add-data=\"config.json:config.json\"",
-        "pkg:mac": "poetry run pyinstaller --onefile src/main.py --distpath build/mac/ai --name main --paths src --add-data=\"config.json:config.json\"",
-        "pkg:win": "poetry run pyinstaller --onefile src/main.py --distpath build/windows/ai --name main.exe --paths src --add-data \"config.json;config.json\"",
+        "build": "poetry run pyinstaller --clean -y pyinstaller.spec --distpath dist",
+        "pkg:linux": "poetry run pyinstaller --clean pyinstaller.spec --distpath build/linux/ai --name main",
+        "pkg:mac": "poetry run pyinstaller --clean pyinstaller.spec --distpath build/mac/ai --name main",
+        "pkg:win": "poetry run pyinstaller --clean pyinstaller.spec --distpath build/windows/ai --name main.exe",
         "start": "cross-env-shell \"[ -x dist/main ] && dist/main || [ -x dist/main.exe ] && dist/main.exe\""
     }
 }
