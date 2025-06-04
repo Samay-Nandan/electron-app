@@ -3,19 +3,19 @@ import { app } from 'electron'
 import { join } from 'path'
 import { getEnv, killPort } from '@shared/index'
 
-const platformBinary = (folder: string, fileBase: string): string =>
-  join(process.resourcesPath, folder, process.platform === 'win32' ? `${fileBase}.exe` : fileBase)
+const platformBinary = (file: string): string =>
+  join(process.resourcesPath, process.platform === 'win32' ? `${file}.exe` : file)
 
 const serviceConfigs = [
   {
     label: 'Node Server',
     port: +getEnv('NODE_SERVER_PORT'),
-    path: platformBinary('server', 'server')
+    path: platformBinary('server')
   },
   {
     label: 'AI Server',
     port: +getEnv('AI_SERVER_PORT'),
-    path: platformBinary('ai', 'main')
+    path: platformBinary('ai')
   }
 ]
 
@@ -47,6 +47,7 @@ const spawnService = (label: string, binPath: string): void => {
 
   proc.on('error', (err) => {
     console.error(`[${label}] failed to start:`, err)
+    console.error(`[${label}] binary path was: ${binPath}`)
   })
 }
 
