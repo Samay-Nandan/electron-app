@@ -2,9 +2,8 @@ import { app, BrowserWindow } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { createMainWindow } from '@main/app'
 import { setupAutoUpdater } from '@main/autoUpdater'
-import { setupIpcHandlers } from '@main/ipc'
-import { launchNodeServer } from '@main/server'
-import { launchAIServer } from '@main/ai'
+import { setupIpcHandlers } from '@main/ipcHandlers'
+import { setupAllBackgroundServices } from '@main/spawn'
 
 app.whenReady().then(async () => {
   electronApp.setAppUserModelId('com.electron')
@@ -12,8 +11,7 @@ app.whenReady().then(async () => {
 
   setupIpcHandlers()
   setupAutoUpdater()
-  await launchNodeServer()
-  await launchAIServer()
+  await setupAllBackgroundServices()
   await createMainWindow()
 })
 
