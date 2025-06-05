@@ -1,17 +1,17 @@
 import fs from 'fs';
-import findUp from 'find-up';
+import path from 'path';
 
-const isPkg =
-  typeof process !== 'undefined' &&
-  typeof (process as NodeJS.Process & { pkg?: unknown }).pkg !== 'undefined';
+const isPkg = typeof process.pkg !== 'undefined';
 
-const cwd = isPkg ? process.cwd() : __dirname;
+const basePath = isPkg ? path.dirname(process.execPath) : path.resolve(__dirname);
 
-const configPath = findUp.sync('config.json', { cwd });
+const configPath = path.join(basePath, 'config.json');
 
-if (!configPath || !fs.existsSync(configPath)) {
+if (!fs.existsSync(configPath)) {
   throw new Error(`config.json not found at: ${configPath}`);
 }
+
+console.log('[Config] Using config.json at:', configPath);
 
 const configData = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
