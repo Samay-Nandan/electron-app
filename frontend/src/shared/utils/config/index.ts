@@ -1,15 +1,16 @@
 import fs from 'fs'
 import path from 'path'
+import findUp from 'find-up'
 
 const isPkg =
   typeof process !== 'undefined' &&
   typeof (process as NodeJS.Process & { pkg?: unknown }).pkg !== 'undefined'
 
-const basePath = isPkg ? path.dirname(process.execPath) : path.resolve(__dirname)
+const configPath = isPkg
+  ? path.join(path.dirname(process.execPath), 'config.json')
+  : findUp.sync('config.json', { cwd: __dirname })
 
-const configPath = path.join(basePath, 'config.json')
-
-if (!fs.existsSync(configPath)) {
+if (!configPath || !fs.existsSync(configPath)) {
   throw new Error(`config.json not found at: ${configPath}`)
 }
 
