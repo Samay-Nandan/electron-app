@@ -1,7 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-const isPkg = typeof process.pkg !== 'undefined'
+const isPkg =
+  typeof process !== 'undefined' &&
+  typeof (process as NodeJS.Process & { pkg?: unknown }).pkg !== 'undefined'
 
 const basePath = isPkg ? path.dirname(process.execPath) : path.resolve(__dirname)
 
