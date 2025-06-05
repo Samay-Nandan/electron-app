@@ -30,6 +30,10 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    env:
+      ELECTRON_MIRROR: https://github.com/electron/electron/releases/download/
+      ELECTRON_BUILDER_BINARIES_MIRROR: https://github.com/electron-userland/electron-builder-binaries
+
     steps:
       - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
